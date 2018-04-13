@@ -19,7 +19,6 @@ import (
 	"strings"
 
 	"github.com/hashicorp/go-multierror"
-	"go.uber.org/multierr"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/yaml"
 	"k8s.io/client-go/kubernetes"
@@ -134,7 +133,6 @@ func getClustersConfigs(k8s kubernetes.Interface, configMapName, configMapNamesp
 				secretName, secretNamespace, key, err)
 			return &ClusterStore{}, nil
 		}
-		cs.clusters = append(cs.clusters, &cluster)
 		cs.clientConfigs[cluster.ObjectMeta.Name] = *clientConfig
 		cs.clusters = append(cs.clusters, &cluster)
 	}
@@ -165,7 +163,7 @@ func getClusterConfigFromSecret(k8s kubernetes.Interface,
 // validateCluster validate a cluster
 func validateCluster(cluster *k8s_cr.Cluster) (err error) {
 	if cluster.TypeMeta.Kind != "Cluster" {
-		err = multierr.Append(err, fmt.Errorf("bad kind in configuration: `%s` != 'Cluster'", cluster.TypeMeta.Kind))
+		err = multierror.Append(err, fmt.Errorf("bad kind in configuration: `%s` != 'Cluster'", cluster.TypeMeta.Kind))
 	}
 	// Default is k8s.
 	if len(cluster.ObjectMeta.Annotations[ClusterPlatform]) > 0 {
