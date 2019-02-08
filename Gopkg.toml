@@ -295,7 +295,8 @@ ignored = [
 
 [[constraint]]
   name = "istio.io/api"
-  branch = "master"
+  branch = "cgilmour/datadog-tracer"
+  source = "https://github.com/DataDog/istio.io-api"
 
 # fortio is latest tagged by default
 

@@ -1642,8 +1642,8 @@
   version = "v2.2.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:b390629410b2cf04b4efc484f24edd872b7ba73bd02b77a44321abb695263321"
+  branch = "cgilmour/datadog-tracer"
+  digest = "1:85ba3ea028e4c3b65d81211e20c00b2bbfbb7992884c0d2de6328642ae549fb2"
   name = "istio.io/api"
   packages = [
     "authentication/v1alpha1",
@@ -1659,7 +1659,8 @@
     "rbac/v1alpha1",
   ]
   pruneopts = "T"
-  revision = "d0444f6849c3e442b5b1e818b29bd2c9dec8ca27"
+  revision = "94fc5bec496a14a45cc10940b1a6d2de875c4c7f"
+  source = "https://github.com/DataDog/istio.io-api"
 
 [[projects]]
   branch = "release-1.11"

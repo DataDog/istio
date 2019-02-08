@@ -22,6 +22,7 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
+REPO=${REPO:-istio}
 VERSION=$1
 
 #Build docker images
@@ -30,7 +31,7 @@ src/build-services.sh "${VERSION}"
 #get all the new image names and tags
 for v in ${VERSION} "latest"
 do
-  IMAGES+=$(docker images -f reference=istio/examples-bookinfo*:"$v" --format "{{.Repository}}:$v")
+  IMAGES+=$(docker images -f reference="$REPO"/examples-bookinfo*:"$v" --format "{{.Repository}}:$v")
   IMAGES+=" "
 done
 
@@ -42,4 +43,4 @@ do
 done
 
 #Update image references in the yaml files
-find . -name "*bookinfo*.yaml" -exec sed -i.bak "s/\\(istio\\/examples-bookinfo-.*\\):[[:digit:]]\\.[[:digit:]]\\.[[:digit:]]/\\1:$VERSION/g" {} +
+find . -name "*bookinfo*.yaml" -exec sed -i.bak "s/\\($REPO\\/examples-bookinfo-.*\\):[[:digit:]]\\.[[:digit:]]\\.[[:digit:]]/\\1:$VERSION/g" {} +

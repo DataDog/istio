@@ -201,7 +201,7 @@ global:
       host: # example: statsd-svc.istio-system
       port: # example: 9125
 
-    # Specify which tracer to use. One of: lightstep, zipkin
+    # Specify which tracer to use. One of: lightstep, zipkin, datadog
     tracer: "zipkin"
 
   proxy_init:
@@ -247,6 +247,10 @@ global:
     zipkin:
       # Host:Port for reporting trace data in zipkin format. If not specified, will default to
       # zipkin service (port 9411) in the same namespace as the other istio components.
+      address: ""
+    datadog:
+      # Host:Port for submitting traces to the Datadog agent. If not specified, the host IP and
+      # default tracing port (8126) will be used.
       address: ""
 
   # Default mtls policy. If true, mtls between services will be enabled by default.

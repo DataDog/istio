@@ -74,6 +74,9 @@ func TestGolden(t *testing.T) {
 			base: "tracing_zipkin",
 		},
 		{
+			base: "tracing_datadog",
+		},
+		{
 			// Specify zipkin/statsd address, similar with the default config in v1 tests
 			base: "all",
 		},

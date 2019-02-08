@@ -82,8 +82,9 @@ public class LibertyRestEndpoint extends Application {
     	return result;
     }
     
-    private JsonObject getRatings(String productId, String user, String useragent, String xreq, String xtraceid, String xspanid,
-                                  String xparentspanid, String xsampled, String xflags, String xotspan){
+    private JsonObject getRatings(String productId, String user, String xreq, String xtraceid, String xspanid,
+                                  String xparentspanid, String xsampled, String xflags, String xotspan,
+                                  String xddtid, String xddpid){
       ClientBuilder cb = ClientBuilder.newBuilder();
       String timeout = star_color.equals("black") ? "10000" : "2500";
       cb.property("com.ibm.ws.jaxrs.client.connection.timeout", timeout);
@@ -111,6 +112,12 @@ public class LibertyRestEndpoint extends Application {
       }
       if(xotspan!=null) {
         builder.header("x-ot-span-context",xotspan);
+      }
+      if(xddtid!=null) {
+        builder.header("x-datadog-trace-id",xddtid);
+      }
+      if(xddpid!=null) {
+        builder.header("x-datadog-parent-id",xddpid);
       }
       if(user!=null) {
         builder.header("end-user", user);
@@ -149,12 +156,14 @@ public class LibertyRestEndpoint extends Application {
                                     @HeaderParam("x-b3-parentspanid") String xparentspanid,
                                     @HeaderParam("x-b3-sampled") String xsampled,
                                     @HeaderParam("x-b3-flags") String xflags,
-                                    @HeaderParam("x-ot-span-context") String xotspan) {
+                                    @HeaderParam("x-ot-span-context") String xotspan,
+                                    @HeaderParam("x-datadog-trace-id") String xddtid,
+                                    @HeaderParam("x-datadog-parent-id") String xddpid) {
       int starsReviewer1 = -1;
       int starsReviewer2 = -1;
 
       if (ratings_enabled) {
-        JsonObject ratingsResponse = getRatings(Integer.toString(productId), user, useragent, xreq, xtraceid, xspanid, xparentspanid, xsampled, xflags, xotspan);
+        JsonObject ratingsResponse = getRatings(Integer.toString(productId), user, xreq, xtraceid, xspanid, xparentspanid, xsampled, xflags, xotspan, xddtid, xddpid);
         if (ratingsResponse != null) {
           if (ratingsResponse.containsKey("ratings")) {
             JsonObject ratings = ratingsResponse.getJsonObject("ratings");

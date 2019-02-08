@@ -135,7 +135,9 @@ def get_forward_headers(request)
                        'x-b3-parentspanid',
                        'x-b3-sampled',
                        'x-b3-flags',
-                       'x-ot-span-context'
+                       'x-ot-span-context',
+                       'x-datadog-trace-id',
+                       'x-datadog-parent-id'
                      ]
 
   request.each do |header, value|
