@@ -86,7 +86,7 @@ data:
 {{- end }}
       containers:
       - name: istio-proxy
-{{- if contains "/" .Values.global.proxy.image }}
+{{- if contains "/" ( "[[ annotation .ObjectMeta `sidecar.istio.io/proxyImage` " }} "{{ .Values.global.proxy.image }}" {{ " ]]" ) }}
         image: {{ "[[ annotation .ObjectMeta `sidecar.istio.io/proxyImage` " }} "{{ .Values.global.proxy.image }}" {{ " ]]" }}
 {{- else }}
         image: {{ "[[ annotation .ObjectMeta `sidecar.istio.io/proxyImage` " }} "{{ .Values.global.hub }}/{{ .Values.global.proxy.image }}:{{ .Values.global.tag }}" {{ " ]]" }}
@@ -179,6 +179,12 @@ data:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
+          {{ "[[- if isset .ObjectMeta.Annotations `datadoghq.com/apm/env` ]]" }}
+          {{ "[[ range $index, $value := fromJSON (index .ObjectMeta.Annotations `datadoghq/apm/env`) ]]" }}
+        - name: "{{ $index }}"
+          value: "{{ $value }}"
+          {{ "[[ end ]]" }}
+          {{ "[[- end ]]" }}
         {{ end }}
         - name: ISTIO_META_POD_NAME
           valueFrom:
